@@ -12,7 +12,7 @@ import LoginModal from './components/LoginModal';
 import Toast from './components/Toast';
 import { studentApi, facultyApi, noticeApi } from './services/api';
 
-export default function App() {
+export default function App() { 
   const [activeView, setActiveView] = useState('landing'); // 'landing' | 'portal' | 'faculty' | 'notices' | 'schedule'
   const [students, setStudents] = useState([]);
   const [facultyList, setFacultyList] = useState([]);

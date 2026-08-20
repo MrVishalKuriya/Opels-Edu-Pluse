@@ -1,4 +1,7 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 
+  (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app') 
+    ? 'https://college-student-management.onrender.com/api' 
+    : '/api');
 
 async function handleResponse(response) {
   if (!response.ok) {
@@ -28,7 +31,7 @@ export const studentApi = {
   },
 
   async searchStudents(name) {
-    const res = await fetch(`${API_BASE_URL}/students/search?name=${encodeURIComponent(name)}`);
+    const res = await fetch(`${API_BASE_URL}/students/search?query=${encodeURIComponent(name)}`);
     return handleResponse(res);
   },
 

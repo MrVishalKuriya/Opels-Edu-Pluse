@@ -5,13 +5,14 @@ import com.college.backend.repository.NoticeRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/notices")
-@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"})
+@CrossOrigin(originPatterns = "*")
 public class NoticeController {
 
     private final NoticeRepository noticeRepository;
@@ -22,7 +23,7 @@ public class NoticeController {
 
     @GetMapping
     public ResponseEntity<List<Notice>> getAllNotices() {
-        return ResponseEntity.ok(noticeRepository.findAllByOrderByDatePostedDescIdDesc());
+        return ResponseEntity.ok(noticeRepository.findAll());
     }
 
     @PostMapping
@@ -31,7 +32,7 @@ public class NoticeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNotice(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteNotice(@PathVariable @NonNull Long id) {
         noticeRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
