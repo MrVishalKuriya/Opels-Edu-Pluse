@@ -11,16 +11,15 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(@NonNull CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns(
+                .allowedOrigins(
                         "https://college-student-management-rkxi.vercel.app",
-                        "https://*.vercel.app",
-                        "http://localhost:[*]",
-                        "http://127.0.0.1:[*]"
+                        "http://localhost:5173",
+                        "http://localhost:3000",
+                        "http://localhost:8080"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .allowedHeaders("*")
-                .exposedHeaders("Authorization", "Content-Type")
-                .allowCredentials(true)
                 .maxAge(3600);
+        // NOTE: allowCredentials is intentionally omitted - not needed for REST API without cookies
     }
 }
