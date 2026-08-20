@@ -5,13 +5,14 @@ import com.college.backend.repository.FacultyRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/faculty")
-@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"})
+@CrossOrigin(originPatterns = "*")
 public class FacultyController {
 
     private final FacultyRepository facultyRepository;
@@ -31,7 +32,7 @@ public class FacultyController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFaculty(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteFaculty(@PathVariable @NonNull Long id) {
         facultyRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
