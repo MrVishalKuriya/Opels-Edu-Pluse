@@ -11,15 +11,16 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(@NonNull CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(
-                        "https://college-student-management-rkxi.vercel.app",
-                        "http://localhost:5173",
-                        "http://localhost:3000",
-                        "http://localhost:8080"
+                // allowedOriginPatterns supports wildcards — covers ALL Vercel preview URLs
+                .allowedOriginPatterns(
+                        "https://*.vercel.app",       // All Vercel preview & prod deployments
+                        "https://college-student-management-rkxi.vercel.app", // Main Vercel URL
+                        "https://college-student-management.onrender.com",    // Render self-call
+                        "http://localhost:*",          // Local dev (any port)
+                        "http://127.0.0.1:*"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .allowedHeaders("*")
                 .maxAge(3600);
-        // NOTE: allowCredentials is intentionally omitted - not needed for REST API without cookies
     }
 }
