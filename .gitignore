@@ -7,8 +7,10 @@ target/
 ### Environment Files ###
 .env
 .env.local
+.env.*.local
 frontend/.env
 frontend/.env.local
+frontend/.env.*.local
 
 ### Frontend Node Modules & Dist ###
 frontend/node_modules/

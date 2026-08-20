@@ -1,15 +1,16 @@
-import { createClient } from '@supabase/supabase-js';
+// ─── Supabase Client (Vite-compatible) ───────────────────────────────────────
+// Supabase quickstart uses process.env (Create React App only).
+// Vite uses import.meta.env with VITE_ prefix — this is the correct version.
+
+import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('⚠️ Supabase env vars not set. Direct Supabase features disabled.');
+if (!supabaseUrl || !supabaseKey) {
+  console.warn("⚠️ Supabase env vars missing. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.");
 }
 
-// Supabase client — used for real-time subscriptions & direct queries
-export const supabase = supabaseUrl && supabaseAnonKey
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null;
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default supabase;
