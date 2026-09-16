@@ -1,0 +1,8 @@
+{
+  "name": "EduPulse - College Student Management System",
+  "description": "Crio.do-inspired applied project-based tech learning and developer fellowship platform with OPELS theme and branding, featuring real-world software project sandboxes, career fellowship tracks, interactive test runner, and placement accelerator.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

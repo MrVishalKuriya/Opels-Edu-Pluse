@@ -1,0 +1,102 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Student or administrator profile information and learning tracks.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID of the user." },
+        "email": { "type": "string", "description": "Email address of the student." },
+        "displayName": { "type": "string", "description": "Full name or screen name of the student." },
+        "photoURL": { "type": "string", "description": "Avatar URL of the student profile." },
+        "role": { "type": "string", "enum": ["STUDENT", "ADMIN", "FACULTY"], "description": "Platform authorization role." },
+        "targetTrack": { "type": "string", "description": "Target learning track chosen by the student." },
+        "xpPoints": { "type": "number", "description": "Gamified experience points earned through learning." },
+        "completedProjects": { "type": "number", "description": "Number of projects finished." },
+        "createdAt": { "type": "string", "description": "ISO timestamp when the user profile was created." }
+      },
+      "required": ["uid", "email"]
+    },
+    "ProjectProgress": {
+      "title": "ProjectProgress",
+      "description": "Student milestone completion and test results for a developer project.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "User ID of the student." },
+        "projectId": { "type": "string", "description": "Unique identifier of the project (e.g. qkart)." },
+        "projectName": { "type": "string", "description": "Human-readable project title." },
+        "completedMilestones": { "type": "number", "description": "Count of successfully passed milestones." },
+        "totalMilestones": { "type": "number", "description": "Total milestones in this project." },
+        "lastPassedMilestone": { "type": "string", "description": "Identifier of the most recent passed milestone." },
+        "lastRunStatus": { "type": "string", "enum": ["PASSED", "FAILED", "NOT_STARTED"], "description": "Last test execution status." },
+        "updatedAt": { "type": "string", "description": "Timestamp of the last test execution." }
+      },
+      "required": ["userId", "projectId"]
+    },
+    "StudentNote": {
+      "title": "StudentNote",
+      "description": "Personal student learning note, interview tip, or snippet.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner student UID." },
+        "title": { "type": "string", "description": "Short note title." },
+        "content": { "type": "string", "description": "Markdown or text content of the note." },
+        "tags": { "type": "string", "description": "Comma separated tag labels." },
+        "createdAt": { "type": "string", "description": "Creation timestamp." }
+      },
+      "required": ["userId", "title", "content"]
+    },
+    "Application": {
+      "title": "Application",
+      "description": "Admissions or fellowship application submitted by a student.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "UID if applicant is logged in, or guest." },
+        "fullName": { "type": "string", "description": "Full name of the candidate." },
+        "email": { "type": "string", "description": "Contact email address." },
+        "phone": { "type": "string", "description": "Contact phone number." },
+        "programId": { "type": "string", "description": "ID of the fellowship program." },
+        "programTitle": { "type": "string", "description": "Title of the fellowship program." },
+        "couponCode": { "type": "string", "description": "Applied scholarship or promo code." },
+        "status": { "type": "string", "enum": ["PENDING", "REVIEWED", "ENROLLED"], "description": "Application review status." },
+        "createdAt": { "type": "string", "description": "Submission ISO date." }
+      },
+      "required": ["fullName", "email", "programId"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Individual message in a multi-turn conversation with Gemini AI study assistant.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Student UID who owns the chat thread." },
+        "role": { "type": "string", "enum": ["user", "model", "assistant", "system"], "description": "Message author role." },
+        "content": { "type": "string", "description": "Message text body." },
+        "modelUsed": { "type": "string", "description": "Gemini model version used." },
+        "timestamp": { "type": "string", "description": "ISO timestamp." }
+      },
+      "required": ["userId", "role", "content"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User student profiles with role and track preferences."
+    },
+    "/users/{userId}/progress/{projectId}": {
+      "schema": { "$ref": "#/entities/ProjectProgress" },
+      "description": "Real-time project milestone progress per student."
+    },
+    "/users/{userId}/studyNotes/{noteId}": {
+      "schema": { "$ref": "#/entities/StudentNote" },
+      "description": "Personal student study notes and tips."
+    },
+    "/applications/{applicationId}": {
+      "schema": { "$ref": "#/entities/Application" },
+      "description": "Course admissions and fellowship applications."
+    },
+    "/chatSessions/{userId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/ChatMessage" },
+      "description": "Persistent Gemini chat messages for the student's conversation thread."
+    }
+  }
+}

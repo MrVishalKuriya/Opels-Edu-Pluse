@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Health check test connection document
+    match /test/connection {
+      allow read: if true;
+    }
+
+    // User student profiles
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create, update: if isOwner(userId);
+      allow delete: if false;
+
+      // Student project progress
+      match /progress/{projectId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Student personal study notes
+      match /studyNotes/{noteId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Admissions and fellowship applications
+    match /applications/{applicationId} {
+      allow create: if true;
+      allow read: if isSignedIn() && (request.auth.uid == resource.data.userId || request.auth.token.email == 'admin@college.edu');
+      allow update, delete: if isSignedIn() && request.auth.token.email == 'admin@college.edu';
+    }
+
+    // Student chat sessions with Gemini AI assistant
+    match /chatSessions/{userId}/messages/{messageId} {
+      allow read, write: if isOwner(userId);
+    }
+  }
+}

@@ -4,13 +4,11 @@ target/
 !.**/src/test/**/target/
 .kotlin
 
-### Environment Files ###
+### Node & Build ###
+node_modules/
+dist/
 .env
 .env.local
-frontend/.env
-frontend/.env.local
-
-### Frontend Node Modules & Dist ###
 frontend/node_modules/
 frontend/dist/
 
